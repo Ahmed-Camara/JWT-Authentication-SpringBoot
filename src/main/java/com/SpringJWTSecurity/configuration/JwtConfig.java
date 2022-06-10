@@ -7,6 +7,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.SpringJWTSecurity.service.CustomUserDetailsService;
 
@@ -39,5 +41,11 @@ public class JwtConfig extends WebSecurityConfigurerAdapter{
 			.and()
 			.sessionManagement()
 			.sessionCreationPolicy(SessionCreationPolicy.STATELESS); // request should be stateless which means server does not have to track requests
+	}
+	
+	public PasswordEncoder passwordEncoder() {
+		
+		// should not be used in production
+		return NoOpPasswordEncoder.getInstance();
 	}
 }
