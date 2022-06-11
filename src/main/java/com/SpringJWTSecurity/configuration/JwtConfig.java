@@ -3,6 +3,7 @@ package com.SpringJWTSecurity.configuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -18,7 +19,7 @@ import com.SpringJWTSecurity.service.CustomUserDetailsService;
 public class JwtConfig extends WebSecurityConfigurerAdapter{
 	
 	@Autowired
-	private CustomUserDetailsService customUserDetailsService;
+	private  CustomUserDetailsService customUserDetailsService;
 	// We can control what will be our authentication mode.
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception{
@@ -35,7 +36,7 @@ public class JwtConfig extends WebSecurityConfigurerAdapter{
 			.cors()
 			.disable()
 			.authorizeRequests()
-			.antMatchers("/generateToken")
+			.antMatchers("/api/generateToken")
 			.permitAll() // this only allow /generateToken without authentication
 			.anyRequest() // after that any other request should be authenticated
 			.authenticated()
@@ -49,5 +50,11 @@ public class JwtConfig extends WebSecurityConfigurerAdapter{
 		
 		// should not be used in production
 		return NoOpPasswordEncoder.getInstance();
+	}
+	
+	@Bean
+	public AuthenticationManager authenticationManagerBean() throws Exception {
+		
+		return super.authenticationManagerBean();
 	}
 }
