@@ -1,6 +1,7 @@
 package com.SpringJWTSecurity.configuration;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -43,6 +44,7 @@ public class JwtConfig extends WebSecurityConfigurerAdapter{
 			.sessionCreationPolicy(SessionCreationPolicy.STATELESS); // request should be stateless which means server does not have to track requests
 	}
 	
+	@Bean
 	public PasswordEncoder passwordEncoder() {
 		
 		// should not be used in production
