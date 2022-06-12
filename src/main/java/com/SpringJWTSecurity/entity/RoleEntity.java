@@ -1,11 +1,18 @@
 package com.SpringJWTSecurity.entity;
 
+import java.util.HashSet;
+import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name="ROLE_TABLE")
@@ -17,7 +24,12 @@ public class RoleEntity {
 	
 	@Column(name="roleName")
 	private String roleName;
-
+	
+	@JsonBackReference
+	@ManyToMany(fetch = FetchType.LAZY, 
+			cascade = CascadeType.ALL,mappedBy="roles")
+	private Set<UserEntity> users = new HashSet<>();
+	
 	public Long getId() {
 		return id;
 	}
