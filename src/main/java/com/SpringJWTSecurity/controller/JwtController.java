@@ -33,6 +33,7 @@ public class JwtController {
 		
 		UsernamePasswordAuthenticationToken upat = 
 				new UsernamePasswordAuthenticationToken(jwtRequest.getUsername(),jwtRequest.getPassword());
+		
 		authenticationManager.authenticate(upat);
 		
 		UserDetails udt = customerUserDetailService.loadUserByUsername(jwtRequest.getUsername());

@@ -11,12 +11,17 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.SpringJWTSecurity.filter.JwtAuthenticationFilter;
 import com.SpringJWTSecurity.service.CustomUserDetailsService;
 
 @Configuration
 @EnableWebSecurity
 public class JwtConfig extends WebSecurityConfigurerAdapter{
+	
+	@Autowired
+	JwtAuthenticationFilter jwtFilter;
 	
 	@Autowired
 	private  CustomUserDetailsService customUserDetailsService;
@@ -43,6 +48,9 @@ public class JwtConfig extends WebSecurityConfigurerAdapter{
 			.and()
 			.sessionManagement()
 			.sessionCreationPolicy(SessionCreationPolicy.STATELESS); // request should be stateless which means server does not have to track requests
+		
+		
+		http.addFilterBefore(jwtFilter,UsernamePasswordAuthenticationFilter.class);
 	}
 	
 	@Bean
