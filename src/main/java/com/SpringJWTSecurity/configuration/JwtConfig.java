@@ -9,8 +9,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.SpringJWTSecurity.filter.JwtAuthenticationFilter;
@@ -21,6 +20,9 @@ import com.SpringJWTSecurity.service.CustomUserDetailsService;
 public class JwtConfig extends WebSecurityConfigurerAdapter{
 	
 	@Autowired
+	private JwtAuthEntryPoint jwtAuthEntryPoint;
+	
+	@Autowired
 	JwtAuthenticationFilter jwtFilter;
 	
 	@Autowired
@@ -28,7 +30,7 @@ public class JwtConfig extends WebSecurityConfigurerAdapter{
 	// We can control what will be our authentication mode.
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception{
-		auth.userDetailsService(customUserDetailsService);
+		auth.userDetailsService(customUserDetailsService).passwordEncoder(passwordEncoder());
 	}
 	
 	// with this method the method, we will control the endpoints admitted or not admitted
@@ -41,16 +43,12 @@ public class JwtConfig extends WebSecurityConfigurerAdapter{
 			.cors()
 			.disable()
 			.authorizeRequests()
-			.antMatchers("/api/generateToken")
+			.antMatchers("/api/login","/api/register","/h2-console/**")
 			.permitAll() // this only allow /generateToken without authentication
-			.and()
-			.authorizeRequests()
-			.antMatchers("/api/roles").permitAll()
-			.and()
-			.authorizeRequests()
-			.antMatchers("/h2-console/**").permitAll()
 			.anyRequest() // after that any other request should be authenticated
 			.authenticated()
+			.and()
+			.exceptionHandling().authenticationEntryPoint(jwtAuthEntryPoint)
 			.and()
 			.sessionManagement()
 			.sessionCreationPolicy(SessionCreationPolicy.STATELESS); // request should be stateless which means server does not have to track requests
@@ -60,10 +58,9 @@ public class JwtConfig extends WebSecurityConfigurerAdapter{
 	}
 	
 	@Bean
-	public PasswordEncoder passwordEncoder() {
+	public BCryptPasswordEncoder passwordEncoder() {
 		
-		// should not be used in production
-		return NoOpPasswordEncoder.getInstance();
+		return new BCryptPasswordEncoder();
 	}
 	
 	@Bean

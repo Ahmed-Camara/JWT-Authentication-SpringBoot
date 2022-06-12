@@ -6,4 +6,5 @@ import com.SpringJWTSecurity.entity.UserEntity;
 
 public interface UserRepository extends JpaRepository<UserEntity,Long>{
 
+	public UserEntity findByUsername(String username);
 }
