@@ -30,7 +30,6 @@ public class JwtController {
 	
 	@PostMapping("/generateToken")
 	public ResponseEntity<JwtResponse> generateToken(@RequestBody JwtRequest jwtRequest){
-		System.out.println("Welcome");
 		
 		UsernamePasswordAuthenticationToken upat = 
 				new UsernamePasswordAuthenticationToken(jwtRequest.getUsername(),jwtRequest.getPassword());
@@ -41,8 +40,6 @@ public class JwtController {
 		String token = jwtUtils.generateToken(udt);
 		
 		JwtResponse jwtResponse = new JwtResponse(token);
-		
-		System.out.println("The token generated is : "+token);
 		
 		return ResponseEntity.ok(jwtResponse);
 	}
