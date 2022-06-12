@@ -9,7 +9,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -45,6 +45,9 @@ public class JwtConfig extends WebSecurityConfigurerAdapter{
 			.permitAll() // this only allow /generateToken without authentication
 			.and()
 			.authorizeRequests()
+			.antMatchers("/api/roles").permitAll()
+			.and()
+			.authorizeRequests()
 			.antMatchers("/h2-console/**").permitAll()
 			.anyRequest() // after that any other request should be authenticated
 			.authenticated()
@@ -60,8 +63,7 @@ public class JwtConfig extends WebSecurityConfigurerAdapter{
 	public PasswordEncoder passwordEncoder() {
 		
 		// should not be used in production
-		//return NoOpPasswordEncoder.getInstance();
-		return new BCryptPasswordEncoder();
+		return NoOpPasswordEncoder.getInstance();
 	}
 	
 	@Bean
