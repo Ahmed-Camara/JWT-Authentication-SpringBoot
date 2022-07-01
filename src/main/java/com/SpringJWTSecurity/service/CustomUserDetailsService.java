@@ -26,10 +26,12 @@ public class CustomUserDetailsService implements UserDetailsService{
 		UserEntity userEntity = userRepository.findByUsername(username);
 		
 		if(userEntity != null) {
+			
 			UserModel userModel = new UserModel();
 			BeanUtils.copyProperties(userEntity, userModel);
 			
 			return userModel;
+			
 		}else {
 			throw new UsernameNotFoundException("User does not exist");
 		}

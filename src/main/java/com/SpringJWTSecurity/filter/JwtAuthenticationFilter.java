@@ -63,6 +63,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 					
 					SecurityContextHolder.getContext().setAuthentication(updt);
 					
+					
 				}else {
 					
 					System.out.println("Invalid Token Format");

@@ -44,7 +44,7 @@ public class JwtConfig extends WebSecurityConfigurerAdapter{
 			.disable()
 			.authorizeRequests()
 			.antMatchers("/api/login","/api/register","/h2-console/**")
-			.permitAll() // this only allow /generateToken without authentication
+			.permitAll() // this only allow /api/login without authentication
 			.anyRequest() // after that any other request should be authenticated
 			.authenticated()
 			.and()
